@@ -1,0 +1,212 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Summary — HEARD</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="app-page">
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="brandmark">♥</span>
+    <span>HEARD<small>Your story. Be heard.</small></span>
+  </a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/chat.html">Your Story</a>
+    <a href="/summary.html">Summary</a>
+    <a href="/brief.html">Clinician brief</a>
+    <a href="/safety.html">Safety</a>
+    <a href="/privacy.html">Privacy</a>
+  </nav>
+</header>
+
+<main class="wrap page-wrap">
+  <div class="page-title">
+    <div>
+      <span class="eyebrow">STEP 2 OF 3</span>
+      <h1>Your story, <em>organized.</em></h1>
+      <p>Your symptoms and assessment, organized for your appointment.</p>
+    </div>
+    <span class="status-chip">Assessment summary</span>
+  </div>
+
+  <div class="summary-grid">
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">YOUR HEALTH STORY</span>
+          <h2>Symptom summary</h2>
+        </div>
+        <button class="outline-btn" id="editSummary">✎ Edit</button>
+      </div>
+
+      <label>Main concern</label>
+      <div class="summary-item">
+        <span class="round-icon">♡</span>
+        <div>
+          <b id="mainConcern">Loading symptoms...</b>
+          <p id="summaryDescription">Your submitted health concerns.</p>
+        </div>
+      </div>
+
+      <label>Assessment findings</label>
+      <div class="summary-item">
+        <span class="round-icon">◷</span>
+        <div>
+          <b>Findings</b>
+          <p id="summaryDuration">Loading assessment...</p>
+        </div>
+      </div>
+
+      <label>Safety information</label>
+      <div class="summary-item">
+        <span class="round-icon">✧</span>
+        <div>
+          <b>Important details</b>
+          <p id="summaryDetails">Loading safety information...</p>
+        </div>
+      </div>
+
+      <div class="editable-area hidden" id="editArea">
+        <label for="concernInput">Main concern</label>
+        <input id="concernInput" placeholder="Describe your main concern">
+
+        <label for="detailInput">Notes for your clinician</label>
+        <textarea id="detailInput" rows="4"
+          placeholder="Add details for your clinician"></textarea>
+
+        <button class="button" id="saveSummary">Save changes</button>
+      </div>
+    </section>
+
+    <aside class="panel clinician-panel">
+      <div class="doctor-icon">✧</div>
+      <span class="eyebrow">FOR YOUR APPOINTMENT</span>
+      <h2>Questions worth asking</h2>
+      <ul id="doctorQuestions">
+        <li>No questions returned by the assessment.</li>
+      </ul>
+      <div class="gentle-note">
+        Discuss these findings with a qualified healthcare professional.
+        This assessment cannot diagnose a medical condition.
+      </div>
+      <a class="button full" href="/brief.html">View clinician brief →</a>
+    </aside>
+  </div>
+
+  <div class="privacy-note">
+    <p id="assessmentDisclaimer">
+      This is an informational assessment, not a medical diagnosis.
+    </p>
+  </div>
+</main>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>
+(function () {
+  let answers = {};
+  let analysis = null;
+
+  try {
+    answers = JSON.parse(
+      sessionStorage.getItem("heardDemoAnswers") || "{}"
+    );
+    analysis = JSON.parse(
+      sessionStorage.getItem("heardAnalysis") || "null"
+    );
+  } catch (error) {
+    console.error("Could not load saved assessment.", error);
+  }
+
+  const concern = document.getElementById("mainConcern");
+  const description = document.getElementById("summaryDescription");
+  const findings = document.getElementById("summaryDuration");
+  const details = document.getElementById("summaryDetails");
+  const questions = document.getElementById("doctorQuestions");
+  const disclaimer = document.getElementById("assessmentDisclaimer");
+
+  const concernText = answers.concern || answers.description ||
+    "No main concern entered";
+
+  concern.textContent = concernText;
+  description.textContent = answers.description ||
+    "No additional description provided.";
+
+  const otherDetails = [
+    answers.cycle ? "Cycle: " + answers.cycle : "",
+    answers.duration ? "Duration: " + answers.duration : "",
+    answers.lastPeriod ? "Last period: " + answers.lastPeriod : "",
+    answers.pain ? "Pain: " + answers.pain : "",
+    answers.medicines ? "Other notes: " + answers.medicines : ""
+  ].filter(Boolean);
+
+  if (!analysis) {
+    findings.textContent =
+      "No backend assessment was saved. Please submit your symptoms again.";
+    details.textContent = otherDetails.join(" · ") ||
+      "No additional details provided.";
+    questions.innerHTML =
+      "<li>Submit your symptoms to generate assessment questions.</li>";
+    return;
+  }
+
+  const findingItems = (analysis.findings || [])
+    .map(item => typeof item === "string" ? item : item.text)
+    .filter(Boolean);
+
+  if (analysis.bleeding_score !== undefined &&
+      analysis.bleeding_score !== null) {
+    findingItems.unshift("Bleeding score: " + analysis.bleeding_score);
+  }
+
+  findings.textContent = findingItems.join(" ") ||
+    "No findings were returned.";
+
+  const flags = analysis.red_flags || [];
+  details.textContent = [
+    analysis.red_flag ? "Important safety flags: " +
+      (flags.join(", ") || "Further review recommended.") :
+      "No specific urgent warning pattern detected; this does not rule out a problem.",
+    analysis.safety_guidance || "If symptoms become severe or you feel unsafe, seek medical care.",
+    ...otherDetails
+  ].filter(Boolean).join(" · ");
+
+  questions.innerHTML = "";
+  const doctorQuestions = analysis.questions_for_doctor || [];
+
+  if (doctorQuestions.length) {
+    doctorQuestions.forEach(question => {
+      const li = document.createElement("li");
+      li.textContent = question;
+      questions.appendChild(li);
+    });
+  } else {
+    const li = document.createElement("li");
+    li.textContent = "Ask your clinician what may explain your symptoms and whether further evaluation is needed.";
+    questions.appendChild(li);
+  }
+
+  disclaimer.textContent = analysis.disclaimer ||
+    "This is an informational assessment, not a medical diagnosis.";
+
+  const concernInput = document.getElementById("concernInput");
+  const detailInput = document.getElementById("detailInput");
+
+  concernInput.value = concernText;
+  detailInput.value = otherDetails.join("\n");
+
+  document.getElementById("saveSummary").addEventListener("click", function () {
+    concern.textContent = concernInput.value.trim() || "Not specified";
+    description.textContent = detailInput.value.trim() ||
+      "No additional description provided.";
+
+    document.getElementById("editArea").classList.add("hidden");
+  });
+})();
+</script>
+</body>
+</html>

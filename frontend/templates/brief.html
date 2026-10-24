@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clinician brief — HEARD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="topbar"><a class="brand" href="/"><span class="brandmark">♥</span><span>HEARD<small>Your story. Be
+                    heard.</small></span></a>
+        <nav>
+        <a href="/">Home</a>
+        <a href="/chat.html">Your Story</a>
+        <a href="/summary.html">Summary</a>
+        <a href="/brief.html">Clinician brief</a>
+        <a href="/safety.html">Safety</a>
+        <a href="/privacy.html">Privacy</a>
+    </nav>
+        <div class="top-actions"><span class="avatar">H</span>
+        </div>
+    </header>
+    <main class="wrap page-wrap">
+        <div class="page-title">
+            <div><span class="eyebrow">STEP 3 OF 3</span>
+                <h1>Your clinician <em>brief.</em></h1>
+                <p>A printable template to help you organize what you want to discuss.</p>
+            </div><button class="button" onclick="window.print()">Print / Save PDF ↗</button>
+        </div>
+        <article class="brief-sheet">
+            <div class="brief-brand"><span class="brandmark">♥</span>
+                <div><b>HEARD</b><small>Your story. Be heard.</small></div><span class="brief-tag">APPOINTMENT
+                    NOTES</span>
+            </div>
+            <h2>My health story</h2>
+            <p class="brief-intro">A patient-prepared summary to support a conversation with a qualified clinician.</p>
+            <div class="brief-section">
+                <h3>1. Main concern</h3>
+                <p>Write the main symptom or concern in your own words.</p>
+                <div class="write-line"></div>
+            </div>
+            <div class="brief-section">
+                <h3>2. Timeline and pattern</h3>
+                <p>When it began, how often it occurs, and any changes you have noticed.</p>
+                <div class="write-line"></div>
+                <div class="write-line"></div>
+            </div>
+            <div class="brief-section">
+                <h3>3. Other relevant details</h3>
+                <p>Cycle details, pain, energy, medicines, previous care, or daily-life impact.</p>
+                <div class="write-line"></div>
+                <div class="write-line"></div>
+            </div>
+            <div class="brief-section">
+                <h3>4. Questions for my clinician</h3>
+                <ul>
+                    <li>What could be contributing to these symptoms?</li>
+                    <li>What next steps would you recommend, and why?</li>
+                    <li>When should I follow up or seek urgent care?</li>
+                </ul>
+            </div>
+            <div class="brief-disclaimer">This template is not a diagnosis, medical advice, or a clinical score. Please
+                review all information for accuracy before sharing.</div>
+        </article>
+    </main>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

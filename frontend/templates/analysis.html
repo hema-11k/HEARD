@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Review & insights — HEARD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="topbar"><a class="brand" href="/"><span class="brandmark">♥</span><span>HEARD<small>Your story. Be
+                    heard.</small></span></a>
+        <nav>
+        <a href="/">Home</a>
+        <a href="/chat.html">Your Story</a>
+        <a href="/summary.html">Summary</a>
+        <a href="/brief.html">Clinician brief</a>
+        <a href="/safety.html">Safety</a>
+        <a href="/privacy.html">Privacy</a>
+    </nav>
+        <div class="top-actions"><span class="avatar">H</span>
+        </div>
+    </header>
+    <main class="wrap page-wrap">
+        <div class="page-title">
+            <div><span class="eyebrow">STEP 2 OF 3</span>
+                <h1>Review what <em>matters to you.</em></h1>
+                <p>Use these prompts to check whether your appointment notes feel complete.</p>
+            </div>
+        </div>
+        <div class="analysis-grid">
+            <section class="panel"><span class="eyebrow">YOUR REVIEW CHECKLIST</span>
+                <h2>Details you may want to add</h2>
+                <div class="check-row"><input type="checkbox">
+                    <div><b>When it started</b>
+                        <p>Approximate date or how long you have noticed it.</p>
+                    </div>
+                </div>
+                <div class="check-row"><input type="checkbox">
+                    <div><b>How often it happens</b>
+                        <p>Frequency, duration, and whether the pattern has changed.</p>
+                    </div>
+                </div>
+                <div class="check-row"><input type="checkbox">
+                    <div><b>How it affects daily life</b>
+                        <p>Sleep, work, study, movement, mood, or activities.</p>
+                    </div>
+                </div>
+                <div class="check-row"><input type="checkbox">
+                    <div><b>Medicines and relevant history</b>
+                        <p>Current medicines, past care, and questions about family history if relevant.</p>
+                    </div>
+                </div>
+                <div class="check-row"><input type="checkbox">
+                    <div><b>Questions I want answered</b>
+                        <p>What you most want to understand at the appointment.</p>
+                    </div>
+                </div>
+            </section>
+            <aside class="panel score-panel">
+                <div class="score-ring">♡</div><span class="eyebrow">YOUR OWN CHECK-IN</span>
+                <h2>Ready when you are</h2>
+                <p>There is no score or pass/fail result. This checklist is simply a reminder to include details that
+                    matter to you.</p><a class="button full" href="/summary.html">Review my summary →</a><a
+                    class="text-link centered" href="/brief.html">Preview clinician brief</a>
+            </aside>
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

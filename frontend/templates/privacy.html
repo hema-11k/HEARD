@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Privacy — HEARD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="topbar"><a class="brand" href="/"><span class="brandmark">♥</span><span>HEARD<small>Your story. Be
+                    heard.</small></span></a>
+        <nav>
+        <a href="/">Home</a>
+        <a href="/chat.html">Your Story</a>
+        <a href="/summary.html">Summary</a>
+        <a href="/brief.html">Clinician brief</a>
+        <a href="/safety.html">Safety</a>
+        <a href="/privacy.html">Privacy</a>
+    </nav>
+        <div class="top-actions"><a class="button small"
+                href="/chat.html">Get started ↗</a></div>
+    </header>
+    <main class="wrap page-wrap">
+        <div class="page-title">
+            <div><span class="eyebrow">YOUR STORY, YOUR CHOICE</span>
+                <h1>Privacy by <em>design.</em></h1>
+                <p>Your health information is personal. Here is what this frontend demo does and does not do.</p>
+            </div>
+        </div>
+        <div class="three-cards">
+            <article class="info-card"><span class="feature-icon lavender">⌁</span>
+                <h3>No server submission</h3>
+                <p>This static frontend demo does not send chat messages to a backend or external AI service.</p>
+            </article>
+            <article class="info-card"><span class="feature-icon mint">▣</span>
+                <h3>Demo interactions only</h3>
+                <p>Some screens use example content. Do not treat it as saved medical records or a secure health
+                    account.</p>
+            </article>
+            <article class="info-card"><span class="feature-icon peach">✧</span>
+                <h3>Use fictional data</h3>
+                <p>Until a secure backend and privacy protections are implemented, use sample information only.</p>
+            </article>
+        </div>
+        <section class="panel privacy-detail">
+            <h2>Before using a real person's information</h2>
+            <p>A production health app needs a clear privacy notice, informed consent, appropriate access controls,
+                secure transmission and storage, deletion procedures, and careful review of applicable laws. This demo
+                does not provide those protections.</p>
+            <p>HEARD is designed to help prepare for a healthcare conversation. It does not diagnose, prescribe, or
+                replace professional care.</p><a class="button" href="/chat.html">Continue to demo →</a>
+        </section>
+    </main>
+    <footer><a class="brand" href="/"><span class="brandmark">♥</span><span>HEARD<small>Your story. Be
+                    heard.</small></span></a>
+        <p>Privacy information for the static demo.</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>

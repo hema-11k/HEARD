@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Safety — HEARD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header class="topbar"><a class="brand" href="/"><span class="brandmark">♥</span><span>HEARD<small>Your story. Be
+                    heard.</small></span></a>
+        <nav>
+        <a href="/">Home</a>
+        <a href="/chat.html">Your Story</a>
+        <a href="/summary.html">Summary</a>
+        <a href="/brief.html">Clinician brief</a>
+        <a href="/safety.html">Safety</a>
+        <a href="/privacy.html">Privacy</a>
+    </nav>
+        <div class="top-actions"><a class="button small"
+                href="/chat.html">Get started ↗</a></div>
+    </header>
+    <main class="wrap page-wrap">
+        <div class="page-title">
+            <div><span class="eyebrow">CARE COMES FIRST</span>
+                <h1>Your safety <em>matters.</em></h1>
+                <p>HEARD helps you prepare for a conversation. It cannot assess emergencies or tell you what condition
+                    you have.</p>
+            </div>
+        </div>
+        <div class="alert-panel">
+            <div class="alert-symbol">!</div>
+            <div>
+                <h2>When to seek urgent help</h2>
+                <p>If you have severe or rapidly worsening symptoms, seek urgent medical care rather than waiting to
+                    finish this tool.</p>
+                <ul>
+                    <li>Very heavy bleeding, especially with weakness, dizziness, or fainting</li>
+                    <li>Severe or sudden abdominal or pelvic pain</li>
+                    <li>Fainting, trouble breathing, chest pain, or feeling seriously unwell</li>
+                    <li>Any symptom that makes you feel you may be in immediate danger</li>
+                </ul>
+                <p class="small-muted">This is not a complete list. If you are worried about your safety, contact local
+                    emergency services or a qualified clinician.</p>
+            </div>
+        </div>
+        <div class="three-cards">
+            <article class="info-card"><span class="feature-icon peach">♡</span>
+                <h3>Not a diagnosis</h3>
+                <p>HEARD organizes information and questions. Only a qualified health professional can evaluate your
+                    situation.</p>
+            </article>
+            <article class="info-card"><span class="feature-icon lavender">✦</span>
+                <h3>No test recommendations</h3>
+                <p>Use the questions to discuss possible next steps with your clinician. This demo does not recommend or
+                    interpret tests.</p>
+            </article>
+            <article class="info-card"><span class="feature-icon mint">♧</span>
+                <h3>You decide what to share</h3>
+                <p>Share only what you are comfortable discussing. You can skip a question or stop at any time.</p>
+            </article>
+        </div>
+        <div class="bottom-cta">
+            <div>
+                <h2>Need help preparing?</h2>
+                <p>Start with what you have noticed, in your own words.</p>
+            </div><a class="button" href="/chat.html">Start my story →</a>
+        </div>
+    </main>
+    <footer><a class="brand" href="/"><span class="brandmark">♥</span><span>HEARD<small>Your story. Be
+                    heard.</small></span></a>
+        <p>Preparation tool only — not a substitute for medical care.</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>
