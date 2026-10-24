@@ -1,5 +1,6 @@
 """HEARD symptom parser: Gemini extraction with a conservative local fallback."""
 import json, os, re
+from datetime import date
 from dotenv import load_dotenv
 from models import Intake
 load_dotenv()
@@ -29,7 +30,12 @@ def local_parse(text: str) -> dict:
   if test.lower() in lower: planned_test=test; break
  location="Pelvic" if re.search(r"pelvic|lower abdomen|lower abdominal|पेट के निचले", lower) else ""
  timing="During period" if re.search(r"during (?:my )?period|period cramps|period ke time|periods ke time", lower) else ""
- return Intake(cycle_length_days=cycle if cycle and 1<=cycle<=120 else None, period_duration_days=duration if duration and 1<=duration<=60 else None, planned_test=planned_test, pain_score=pain, pain_location=location, pain_timing=timing, fatigue=bool(re.search(r"\bfatigue\b|\bfatigued\b|\btired\b|thakaan|थकान", lower)), red_flags=keyword_red_flags(text), notes=text).model_dump()
+ lps=None
+ m=re.search(r"last period:\s*(\d{4}-\d{2}-\d{2})", lower)
+ if m:
+  try: lps=date.fromisoformat(m.group(1))
+  except ValueError: pass
+ return Intake(cycle_length_days=cycle if cycle and 1<=cycle<=120 else None, period_duration_days=duration if duration and 1<=duration<=60 else None, planned_test=planned_test, pain_score=pain, pain_location=location, pain_timing=timing, fatigue=bool(re.search(r"\bfatigue\b|\bfatigued\b|\btired\b|thakaan|थकान", lower)), red_flags=keyword_red_flags(text), last_period_start=lps, notes=text).model_dump()
 def gemini_parse(text: str) -> dict:
  from google import genai
  api_key=os.getenv("GEMINI_API_KEY")

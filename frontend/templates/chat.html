@@ -100,6 +100,16 @@
                         <label class="field-label" for="lastPeriod">Last period (optional)</label>
                         <input id="lastPeriod" name="lastPeriod" type="date">
 
+                        <label class="field-label" for="plannedTest">Blood test your doctor has planned (optional)</label>
+                        <select id="plannedTest" name="plannedTest">
+                            <option value="">None / not sure</option>
+                            <option>FSH / LH / Estradiol</option>
+                            <option>Progesterone</option>
+                            <option>TSH</option>
+                            <option>Prolactin</option>
+                            <option>Ferritin / CBC</option>
+                        </select>
+
                         <label class="field-label" for="pain">Pain or discomfort</label>
                         <select id="pain" name="pain">
                             <option value="">Choose if relevant</option>
@@ -113,7 +123,7 @@
                         <label class="field-label" for="medicines">Medicines, past care, or other notes</label>
                         <textarea id="medicines" name="medicines" rows="3" placeholder="Anything you want your clinician to know..."></textarea>
 
-                        <div class="gentle-note">This demo does not interpret symptoms or generate clinical scores.</div>
+                        <div class="gentle-note">HEARD does not diagnose. It organises patterns and test timing for you to discuss with your clinician.</div>
                     </div>
 
                     <div class="form-step" data-step="3">

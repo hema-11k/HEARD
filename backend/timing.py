@@ -1,4 +1,4 @@
-
+from datetime import date, timedelta
 from typing import Optional
 from models import TimingCheck
 
@@ -67,24 +67,57 @@ TESTS = {
 }
 
 
+def _window(test, lps, cycle_length):
+    """Best window (start, end) in the cycle that began on lps. Cycle day N = lps + (N-1)."""
+    if test == "FSH / LH / Estradiol":
+        return lps + timedelta(days=1), lps + timedelta(days=4)  # cycle days 2-5
+    if test == "Progesterone":
+        if cycle_length is None or not 21 <= cycle_length <= 35:
+            return None  # unreliable for irregular cycles
+        t = cycle_length - 7
+        return lps + timedelta(days=t - 2), lps + timedelta(days=t)  # days t-1 .. t+1
+    return None  # TSH, prolactin, ferritin/CBC: no fixed day
+
+
+def plan_window(test, lps, cycle_length, today=None):
+    """Next usable window on or after today; rolls into the next cycle if this one has passed."""
+    today = today or date.today()
+    w = _window(test, lps, cycle_length)
+    if not w:
+        return None
+    start, end = w
+    n = 0
+    while end < today and cycle_length and n < 12:
+        start, end, n = start + timedelta(days=cycle_length), end + timedelta(days=cycle_length), n + 1
+    return None if end < today else (start, end)
+
+
 def check_timing(
     test: Optional[str],
     day: Optional[int],
-    cycle_len: Optional[int]
+    cycle_len: Optional[int],
+    last_period_start: Optional[date] = None,
+    today: Optional[date] = None,
 ) -> Optional[TimingCheck]:
 
-    if not test or not day or test not in TESTS:
+    if not test or test not in TESTS:
         return None
-
-    if day < 1 or day > 120:
+    today = today or date.today()
+    if not day and last_period_start:
+        day = (today - last_period_start).days + 1
+    if not day or day < 1 or day > 120:
         return None
 
     timing_function, source = TESTS[test]
     ok, note = timing_function(day, cycle_len)
 
-    return TimingCheck(
-        test=test,
-        ok=ok,
-        note=note,
-        source=source
-    )
+    start = end = None
+    text = "Any cycle day" if test in ("TSH", "Prolactin", "Ferritin / CBC") else ""
+    if last_period_start:
+        w = plan_window(test, last_period_start, cycle_len, today)
+        if w:
+            start, end = w
+            text = f"Book between {start.day} {start:%b} and {end.day} {end:%b}"
+
+    return TimingCheck(test=test, ok=ok, note=note, source=source,
+                       window_start=start, window_end=end, window_text=text)

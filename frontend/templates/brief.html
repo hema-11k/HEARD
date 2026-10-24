@@ -66,6 +66,38 @@
         </article>
     </main>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>
+(function () {
+  try {
+    const a = JSON.parse(sessionStorage.getItem("heardAnalysis") || "null");
+    const ans = JSON.parse(sessionStorage.getItem("heardDemoAnswers") || "{}");
+    const anchor = document.querySelector(".brief-intro");
+    if (!a || !anchor) return;
+    const sec = document.createElement("div");
+    sec.className = "brief-section";
+    function h(text) { const e = document.createElement("h3"); e.textContent = text; sec.appendChild(e); }
+    function list(items) {
+      const ul = document.createElement("ul");
+      items.filter(Boolean).forEach(t => { const li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+      sec.appendChild(ul);
+    }
+    h("Prepared from my answers");
+    list([ans.concern && "Main concern: " + ans.concern, ans.duration && "Noticed for: " + ans.duration,
+          ans.cycle && "Cycle pattern: " + ans.cycle, ans.lastPeriod && "Last period: " + ans.lastPeriod,
+          ans.pain && "Pain: " + ans.pain]);
+    h("Patterns worth discussing");
+    list((a.findings || []).map(f => f.text + (f.source ? " (" + f.source + ")" : "")));
+    if (a.timing) {
+      h("Test slip");
+      list([a.timing.test, a.timing.window_text, a.timing.note, "Source: " + a.timing.source]);
+    }
+    h("Questions to ask");
+    list(a.questions_for_doctor || []);
+    if (a.advocacy_line) { const p = document.createElement("p"); p.textContent = "If I feel brushed off: " + a.advocacy_line; sec.appendChild(p); }
+    anchor.insertAdjacentElement("afterend", sec);
+  } catch (e) { console.error(e); }
+})();
+</script>
 </body>
 
 </html>

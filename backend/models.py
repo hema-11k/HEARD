@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional
 from pydantic import BaseModel, Field
 
@@ -7,6 +8,7 @@ class Intake(BaseModel):
     period_duration_days: Optional[int] = Field(None, ge=1, le=60)
     cycle_day_today: Optional[int] = Field(None, ge=1, le=120)
     planned_test: Optional[str] = None
+    last_period_start: Optional[date] = None  # YYYY-MM-DD, powers the test-timing planner
 
     pads_light: Optional[int] = Field(None, ge=0, le=100)
     pads_moderate: Optional[int] = Field(None, ge=0, le=100)
@@ -34,6 +36,9 @@ class TimingCheck(BaseModel):
     ok: bool
     note: str
     source: str
+    window_start: Optional[date] = None
+    window_end: Optional[date] = None
+    window_text: str = ""
 
 
 class Result(BaseModel):

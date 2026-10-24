@@ -36,6 +36,10 @@ def analyze(d: Intake) -> Result:
     heavy_reported = bool(re.search(r"\bheavy bleeding\b|\bvery heavy\b|\bperiods? (?:are|is) heavy\b|\bheavy (?:periods?|flow)\b", notes))
     painful_reported = bool(re.search(r"\bvery painful\b|\bsevere pain\b|\bperiods? (?:are|is) painful\b|\bperiods?\b.{0,60}\bpainful\b|\bextremely painful\b|\bsevere cramps?\b", notes))
 
+    form_pain = re.search(r"\bpain:\s*(mild|moderate|severe)\b", notes)
+    form_pain = form_pain.group(1) if form_pain else None
+    long_duration = bool(re.search(r"\bduration:\s*more than 3 months", notes))
+
     if heavy_reported:
         findings.append(Finding(text="You reported heavy menstrual bleeding. The pad/clot counts needed for a numeric screening estimate were not all provided, so no bleeding score is calculated.", source="User-reported symptom; a clinician can assess severity and possible causes."))
         questions.append("Could we assess the amount of bleeding and whether a blood count or iron testing is appropriate?")
@@ -53,6 +57,10 @@ def analyze(d: Intake) -> Result:
         timing = f", {d.pain_timing.lower()}" if d.pain_timing else ""
         findings.append(Finding(text=f"Pain reported as {d.pain_score}/10{location}{timing}.", source="Significant or recurring pain may warrant clinical evaluation."))
         questions.append("What could be causing this pain, and what should we do next?")
+    elif form_pain == "severe" and not painful_reported:
+        since = " and have noticed this for more than 3 months" if long_duration else ""
+        findings.append(Finding(text=f"You described your pain as severe{since}. A numeric pain score was not provided, so none has been assumed.", source="User-reported symptom; significant or recurring pain may warrant clinical evaluation."))
+        questions.append("What could be causing this pain, and what options are appropriate for me?")
     elif painful_reported:
         findings.append(Finding(text="You described your periods as very painful. A numeric pain score was not provided, so none has been assumed.", source="User-reported symptom; significant or recurring pain may warrant clinical evaluation."))
         questions.append("What could be causing this pain, and what options are appropriate for me?")
@@ -73,7 +81,7 @@ def analyze(d: Intake) -> Result:
     return Result(
         red_flag=bool(d.red_flags), red_flags=d.red_flags, safety_guidance=safety,
         bleeding_score=score, findings=findings,
-        timing=check_timing(d.planned_test, d.cycle_day_today, cycle_length),
+        timing=check_timing(d.planned_test, d.cycle_day_today, cycle_length, d.last_period_start),
         questions_for_doctor=questions,
         advocacy_line="I understand symptoms can be common, but they are affecting my life. What is the next step if this continues?",
         disclaimer=DISCLAIMER,
