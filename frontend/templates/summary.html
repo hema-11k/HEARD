@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -166,11 +165,20 @@
   findings.textContent = findingItems.join(" ") ||
     "No findings were returned.";
 
+  if (analysis.timing) {
+    const t = analysis.timing;
+    const box = document.createElement("p");
+    box.style.fontWeight = "600";
+    box.textContent = "Test timing (" + t.test + "): " +
+      (t.window_text ? t.window_text + ". " : "") + t.note;
+    findings.parentElement.appendChild(box);
+  }
+
   const flags = analysis.red_flags || [];
   details.textContent = [
     analysis.red_flag ? "Important safety flags: " +
       (flags.join(", ") || "Further review recommended.") :
-      "No specific urgent warning pattern detected; this does not rule out a problem.",
+      "",
     analysis.safety_guidance || "If symptoms become severe or you feel unsafe, seek medical care.",
     ...otherDetails
   ].filter(Boolean).join(" · ");

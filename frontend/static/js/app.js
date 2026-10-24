@@ -128,6 +128,7 @@ if (intake) {
         ["Duration", data.get("duration") || "Not specified"],
         ["Cycle pattern", data.get("cycle") || "Not specified"],
         ["Last period", data.get("lastPeriod") || "Not added"],
+        ["Planned test", data.get("plannedTest") || "None"],
         ["Pain", data.get("pain") || "Not specified"],
         ["Other notes", data.get("medicines") || "Not added"]
       ];
@@ -161,6 +162,7 @@ if (intake) {
         "Duration: " + (data.duration || "not specified"),
         "Cycle pattern: " + (data.cycle || "not specified"),
         "Last period: " + (data.lastPeriod || "not provided"),
+        "Planned test: " + (data.plannedTest || "none"),
         "Pain: " + (data.pain || "not specified"),
         "Medicines and notes: " + (data.medicines || "not provided"),
         "Questions for clinician: " + (data.questions || "none added")
